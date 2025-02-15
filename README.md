@@ -10,4 +10,4 @@ While the Windows Installer attempts to complete an installation repair, monitor
 `killall /f /t /im wmiexec.exe`
 
 That's about it. 
-Also find the more autoamted process for C#. Testing has been very limited and requires elevated privileges on a system where uninstallation or other EDR evasion techniques fall short such as firewall rules, modifying registry, modifying related dll's or other files that would fall into MITRE ATT&CK ID: T1562.001
+Also find the more automated process for C#. Testing has been very limited and requires elevated privileges on a system where uninstallation or other EDR evasion techniques fall short such as firewall rules, modifying registry, modifying related dll's or other files that would fall into MITRE ATT&CK ID: T1562.001
