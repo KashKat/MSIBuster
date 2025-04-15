@@ -4,13 +4,16 @@ Abusing Microsoft Installer - MSIexec to force repair a hardened applications wh
 ## Exploitation
 For when post exploitation still requires disabling the EDR agent on an end point, but the usual low hanging fruit are gatekeeped by anti-tampering configurations limiting access to processes, services, installation directory or registry (sub)keys. The EDR agents I've researched is often safeguarded by an uninstallation command through msiexec.exe with a password, however this doesn't always apply to the forced repair '`/fa`' argument. 
 
+The attack involves locating the cached MSI installer for the EDR agent (commonly stored in the ccmcache directory as part of MECM deployments), then invoking a forced repair process using msiexec /fa. 
+
 `msiexec.exe /fa <installer.msi|{product Id} /qa`
 
-While the Microsoft Installer (MSIExec) begins the process of the repair, the EDR agent process(es) will be terminated and services shutdown in order to modify all files in the installation directory. Monitoring for this process shutdown manually through task manager, then end the process associated to msiexec.exe with the `killall` command.  
+During the repair process, the EDR agent and its child processes are momentarily terminated, creating a narrow but exploitable window. By forcefully terminating the repair process (MSIExec) mid-execution-after the EDR has been shut down but before it is reinitialized-the EDR remains non-functional.
 
 `killall /f /t /im msiexec.exe`
 
-The EDR Agent process(es) are terminated and considered inoperable until the system is restarted. 
+This allows a red-team operator or threat actor to bypass detection and execute payloads without triggering the EDR's monitoring capabilities. 
+
 Can automate the process with the EDRBuster.cs and compile it. 
 
 ## Other Info
